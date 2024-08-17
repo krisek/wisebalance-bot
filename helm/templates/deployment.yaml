@@ -1,0 +1,54 @@
+# wisebalance-chart/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.service.name }}
+  labels:
+    app: {{ .Values.service.name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.service.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.service.name }}
+    spec:
+      containers:
+        - name: wisebalance
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+          env:
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: wisebalance-secrets
+                  key: API_KEY
+            - name: PROFILE_ID
+              valueFrom:
+                secretKeyRef:
+                  name: wisebalance-secrets
+                  key: PROFILE_ID
+            - name: USER_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: wisebalance-secrets
+                  key: USER_TOKEN
+            - name: MATRIX_URL
+              valueFrom:
+                secretKeyRef:
+                  name: wisebalance-secrets
+                  key: MATRIX_URL
+            - name: MATRIX_USER
+              valueFrom:
+                secretKeyRef:
+                  name: wisebalance-secrets
+                  key: MATRIX_USER
+            - name: MATRIX_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: wisebalance-secrets
+                  key: MATRIX_PASS

@@ -1,0 +1,4 @@
+apiVersion: v2
+name: wisebalance-bot
+description: A Helm chart for deploying Wisebalance Bot
+version: 0.1.0
